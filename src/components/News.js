@@ -31,7 +31,7 @@ export class News extends Component {
 
     async updateNews(){
       this.props.setProgress(0);
-      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=2481577306154c9980d444f68bc5e800&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({loading: true});
         let data = await fetch(url);// here data itself is a promise because fetch(url) returns a promise
         this.props.setProgress(30);
@@ -60,7 +60,7 @@ export class News extends Component {
         page: this.state.page+1
       })
 
-      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=2481577306154c9980d444f68bc5e800&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({loading: true});
         let data = await fetch(url);// here data itself is a promise because fetch(url) returns a promise
         let parsedData = await data.json();
