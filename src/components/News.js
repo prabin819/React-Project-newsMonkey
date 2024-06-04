@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 
+
 export class News extends Component {
 
     static defaultProps = {
@@ -22,20 +23,24 @@ export class News extends Component {
         super(props);
         this.state={
             articles: [],
-            loading: false,
+            loading: true,
             page: 1,
             totalResults:0
         }
     }
 
     async updateNews(){
+      this.props.setProgress(0);
       let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=2481577306154c9980d444f68bc5e800&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({loading: true});
         let data = await fetch(url);// here data itself is a promise because fetch(url) returns a promise
+        this.props.setProgress(30);
         let parsedData = await data.json();
+        this.props.setProgress(70);
         //console.log(parsedData);
         this.setState({articles: parsedData.articles, totalResults: parsedData.totalResults,
             loading: false, page:this.state.page+1});
+            this.props.setProgress(100);
     }
 
     async componentDidMount(){
@@ -116,9 +121,9 @@ export class News extends Component {
   render() {
     return (
       <>
-        <h2 className="row ms-4">NewsMonkey - Top news</h2>
-        {/* {this.state.loading && <Loading/>} */}
-        <div className="row ms-4">
+        <h2 className="text-center">NewsMonkey - Top news</h2>
+        {this.state.loading && <Loading/>}
+        
             {/* {!this.state.loading && this.state.articles?.map((element)=>{ */}
             <InfiniteScroll
             dataLength={this.state.articles.length}
@@ -126,6 +131,7 @@ export class News extends Component {
             hasMore={this.state.articles.length !== this.state.totalResults}
             loader={this.state.loading && <Loading/>}
             >
+              <div className="container">
             <div className="row">
             {/* {console.log(this.state.articles.length)} */}
             {this.state.articles?.map((element)=>{
@@ -134,8 +140,9 @@ export class News extends Component {
                     </div>
             })}
             </div>
+            </div>
             </InfiniteScroll>
-        </div>
+        
 
         {/* <div className='container d-flex justify-content-between'>
             <button disabled={this.state.page<=1} type='button' className="btn btn-primary" onClick={this.handlePrevClick}>&larr; Previous</button>
